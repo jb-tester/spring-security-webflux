@@ -46,7 +46,7 @@ public class SecurityConfig {
                     .build();
             return new MapReactiveUserDetailsService(user,admin);
         }
-        @Order(Ordered.HIGHEST_PRECEDENCE)
+        /*@Order(Ordered.HIGHEST_PRECEDENCE)
         @Bean
         SecurityWebFilterChain adminHttpSecurity(ServerHttpSecurity http) {
             http
@@ -69,7 +69,7 @@ public class SecurityConfig {
                     .httpBasic(withDefaults())
                     .formLogin(withDefaults()));
             return http.build();
-        }
+        }*/
         @Bean
         public SecurityWebFilterChain secretAndBarSecurityFilterChain(ServerHttpSecurity http) {
             http.authorizeExchange()
@@ -78,6 +78,9 @@ public class SecurityConfig {
                     .pathMatchers("/bar/**")
                     .hasAuthority("ROLE_USER")
                     .pathMatchers("/principal1","/principal2").authenticated()
+                    .pathMatchers("/case_zero/**").hasRole("ADMIN")
+                    .pathMatchers("/case_third/**").hasRole("ADMIN")
+                    .pathMatchers("/case_first/**","/case_second/**").authenticated()
                     .pathMatchers("/**").permitAll()
                     .and().httpBasic();
             return http.build();
